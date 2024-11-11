@@ -17,13 +17,18 @@ public class TutorialTextManager : MonoBehaviour
         "It seems you've come across two corpses in the forest, lucky you! To pick your path of power you must chose what to do with the corpses of your foes.",
         "You have 3 options, & you can pick 2 paths.",
         "You may carry a corpse in which you will gain health & the ability to PULL an enemy to the front of the attack order (the closer enemies are to you the more damage melee attacks do), however doing this makes you skip a turn of combat.",
-        "Your second option is to absorb the corpse, by doing this you will increase your attack power however, you will lose mana meaning your attacks hit harder but there is less of them...",
+        "Your second option is to absorb the corpse, by doing this you will increase your attack power however, you will lose mana meaning your attacks hit harder but there is less of them.",
         "You also gain the ability to PUSH the front enemy back a position which also deals damage (increases the more bodies absorbed).",
-        "Finally, you may abstain from either options and release the souls of the corpses. By selecting this you will increase your mana but lose health.",
-        "You will also gain the ability to perform a FIRE ABILITY granted to you by a higher power which can deal a small amount of damage to all enemies which also does damage over time",
-        "The unique class abilites (the PUSH, PULL and FIRE) are also restricted to one per turn",
-        "If you are now ready to pick your path select that option or if you want it explained again click again",
+        "Finally, you may abstain and release the souls of the corpses. By selecting this you will increase your mana but lose health.",
+        "You will also gain the ability to perform a FIRE ABILITY granted to you by a higher power which can deal a small amount of damage to all enemies which also does damage over time.",
+        "The unique class abilites (the PUSH, PULL and FIRE) are also restricted to one per turn.",
+        "If you are now ready to pick your paths (you must select 2) select that option or if you want it rexplained, click again...",
         ""};
+
+    private void Start()
+    {
+        continueButton.SetActive(false);
+    }
 
     public void Update()
     {
@@ -32,10 +37,6 @@ public class TutorialTextManager : MonoBehaviour
         if (textPart == 8)
         {
             continueButton.SetActive(true);
-        }
-        else
-        {
-            continueButton.SetActive(false);
         }
     }
 
