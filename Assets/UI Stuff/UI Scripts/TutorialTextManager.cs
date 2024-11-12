@@ -22,7 +22,7 @@ public class TutorialTextManager : MonoBehaviour
         "Finally, you may abstain and release the souls of the corpses. By selecting this you will increase your mana but lose health.",
         "You will also gain the ability to perform a FIRE ABILITY granted to you by a higher power which can deal a small amount of damage to all enemies which also does damage over time.",
         "The unique class abilites (the PUSH, PULL and FIRE) are also restricted to one per turn.",
-        "If you are now ready to pick your paths (you must select 2) select that option or if you want it rexplained, click again...",
+        "If you are now ready to pick your paths (you must select 2) select CONTINUE or if you want it rexplained, click again...",
         ""};
 
     private void Start()
@@ -42,7 +42,7 @@ public class TutorialTextManager : MonoBehaviour
 
     private void textManagement()
     {
-        if (textPart > 8)
+        if (textPart < 8)
         {
             explanationText.text = (textParts[textPart] + " Click to continue...");
         }
@@ -54,12 +54,17 @@ public class TutorialTextManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            textPart++;
+            Invoke("textPartPlus", 0.2f);
         }
 
         if (textPart == 9)
         {
             textPart = 0;
         }
+    }
+
+    private void textPartPlus()
+    {
+        textPart++;
     }
 }
