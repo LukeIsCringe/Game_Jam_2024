@@ -19,7 +19,7 @@ MonoBehaviour:
     rid: 615417814887170048
   m_Scenes:
   - m_enabled: 1
-    m_path: Assets/Scenes/Start_Scene.unity
+    m_path: Assets/Scenes/Main_Scene.unity
   - m_enabled: 0
     m_path: Assets/Scenes/TestScene.unity
   m_ScriptingDefines: []

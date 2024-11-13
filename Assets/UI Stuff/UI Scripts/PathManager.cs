@@ -1,11 +1,24 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class PathManager : MonoBehaviour
 {
+    //Player Stuff
     public GameObject player;
+
+    [SerializeField]private GameObject playerHealthUI;
+    [SerializeField] private float healthAlpha;
+
+
     [SerializeField] private GameObject transitionScreen;
-    [SerializeField] private float alphaIncrease;
+    [SerializeField] private GameObject pathText;
+
+    [SerializeField] private float alpha;
+    [SerializeField] private float alphaDecrease;
+    public bool level1Loaded;
+    public bool loadLevel1Assets;
+    
 
     [SerializeField] private TMP_Text pathType;
 
@@ -26,11 +39,18 @@ public class PathManager : MonoBehaviour
     {
         selectionCount = 0;
 
-        alphaIncrease = 0;
+        alpha = 0;
+        alphaDecrease = 0.25f;
+
+        healthAlpha = 0;
 
         carrySelected = false;
         absorbSelected = false;
         abstainSelected = false;
+
+        level1Loaded = false;
+
+        loadLevel1Assets = false;
     }
 
     public void Update()
@@ -39,24 +59,53 @@ public class PathManager : MonoBehaviour
         isPathSelected();
         pathTypeText();
 
-        transitionScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0.02532968f, 0.1886792f, alphaIncrease);
+        transitionScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0.02532968f, 0.1886792f, alpha);
+        pathType.GetComponent<TextMeshProUGUI>().color = new Color(0.6745098f, 0.803049f, 0.9607843f, alpha);
+        playerHealthUI.GetComponent<TextMeshProUGUI>().color = new Color(1, 0.1745283f, 0.1745283f, healthAlpha);
     }
 
     public void pathTypeText()
     {
         if (pathSelected)
         {
-            if (alphaIncrease <= 1)
+            if (alpha < 1 && !level1Loaded)
             {
-                alphaIncrease = alphaIncrease + 0.1f * Time.deltaTime;
+                alpha = alpha + 0.2f * Time.deltaTime;
             }
-            else if (alphaIncrease > 1)
+            else if (alpha > 1 && !level1Loaded)
             {
-                alphaIncrease = 1;
+                alpha = 1;
             }
 
             pathType.text = ("You have chosen the path of " + pathTypes[pathTypeNum] + ". These are the paths you have dedicated yourself to on your journey. Good luck on your search for power...");
+
+            loadLevel1Assets = true;
+
+            Invoke("loadLevel1", 10);
         }
+    }
+
+    private void loadLevel1()
+    {
+        transitionClose();
+
+        //Make player sprite correct
+        
+    }
+
+    private void transitionClose()
+    {
+        level1Loaded = true;
+
+        alpha = alpha - alphaDecrease * Time.deltaTime;
+
+        if (alpha <= 0)
+        {
+            alphaDecrease = 0;
+            alpha = 0;
+        }
+
+        healthAlpha = healthAlpha + 0.25f * Time.deltaTime;
     }
 
     public void dualPathSelection()
