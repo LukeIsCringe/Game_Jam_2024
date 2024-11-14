@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     public bool p_TurnTaken;
 
     public TMP_Text healthText;
+    public TMP_Text manaText;
 
     private void Start()
     {
@@ -20,11 +21,12 @@ public class PlayerManager : MonoBehaviour
 
     public void Update()
     {
-        setHealthText();
+        setStatText();
     }
 
-    private void setHealthText()
+    private void setStatText()
     {
-        healthText.text = new string ("Player Health: "+p_Health.ToString());
+        healthText.text = new string ("Player Health: " + p_Health.ToString());
+        manaText.text = new string("Player Mana: " + p_Mana.ToString());
     }
 }

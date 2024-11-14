@@ -4,12 +4,13 @@ using TMPro;
 
 public class PathManager : MonoBehaviour
 {
-    //Player Stuff
+    // Player stuff
     public GameObject player;
 
     [SerializeField]private GameObject playerHealthUI;
     [SerializeField] private float healthAlpha;
 
+    // Transition & loading stuff
 
     [SerializeField] private GameObject transitionScreen;
     [SerializeField] private GameObject pathText;
@@ -19,6 +20,7 @@ public class PathManager : MonoBehaviour
     public bool level1Loaded;
     public bool loadLevel1Assets;
     
+    // Path selection stuff
 
     [SerializeField] private TMP_Text pathType;
 
@@ -34,6 +36,16 @@ public class PathManager : MonoBehaviour
     [SerializeField] private int pathTypeNum = 0;
 
     [SerializeField] private bool pathSelected;
+
+    // Ability Setting stuff
+
+    [SerializeField] private string[] abilityNames = {"Chain Pull", "Beastly Push", "Pharisaical Fire"};
+
+    [SerializeField] private GameObject Ability_1_Button;
+    [SerializeField] private TMP_Text Ability_1_Text;
+
+    [SerializeField] private GameObject Ability_2_Button;
+    [SerializeField] private TMP_Text Ability_2_Text;
 
     private void Start()
     {
