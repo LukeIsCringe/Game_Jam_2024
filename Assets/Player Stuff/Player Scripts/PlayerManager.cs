@@ -5,7 +5,10 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField]public static int p_Health;
     public int p_MaxHealth;
+
     public int p_Mana;
+    public int p_MaxMana;
+
     public int p_Damage;
 
     public static bool p_TurnTaken;
@@ -24,8 +27,6 @@ public class PlayerManager : MonoBehaviour
     public void Update()
     {
         setStatText();
-
-        p_MaxHealth = p_Health;
     }
 
     private void setStatText()

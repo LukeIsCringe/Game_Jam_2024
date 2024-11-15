@@ -93,9 +93,28 @@ public class PlayerCombatManager : MonoBehaviour
             Invoke("UICover", 13f);
         }
 
+        turnChangeover();
         resetButtons();
+        //zeroMana();
+    }
 
-        zeroMana();
+    private void turnChangeover()
+    {
+        EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
+        PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
+
+        if (playerTurn && !eManager.enemyTurn && pManager.p_Mana == 0)
+        {
+            pManager.p_Mana = pManager.p_MaxMana;
+            playerUICombatCover.SetActive(false);
+
+            attackButton.SetActive(true);
+
+            endTurnButton.SetActive(true);
+
+            ability1.SetActive(true);
+            ability2.SetActive(true);
+        } 
     }
 
     private void UICover()
@@ -388,15 +407,25 @@ public class PlayerCombatManager : MonoBehaviour
 
             ability1.SetActive(false);
             ability2.SetActive(false);
+
+            pManager.p_Mana = 0;
         }
     }
 
     public void endTurn()
     {
         EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
+        PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
 
         combatAlpha = 1;
+
+        pManager.p_Mana = 0;
+        
         playerTurn = false;
         eManager.enemyTurn = true;
+
+        zeroMana();
+
+        endTurnButton.SetActive(false);
     }
 }

@@ -266,8 +266,11 @@ public class PathManager : MonoBehaviour
 
     public void carryPath()
     {
+        PlayerManager pManager = player.GetComponent<PlayerManager>();
+
         PlayerManager.p_Health = PlayerManager.p_Health + 15;
-        //PlayerManager.p_MaxHealth = PlayerManager.p_MaxHealth + 15;
+        pManager.p_MaxHealth = pManager.p_MaxHealth + 15;
+
         carrySelected = true;
 
         carryButton.SetActive(false);
@@ -284,7 +287,10 @@ public class PathManager : MonoBehaviour
         PlayerManager pManager = player.GetComponent<PlayerManager>();
 
         pManager.p_Damage = pManager.p_Damage + 10;
+
         pManager.p_Mana = pManager.p_Mana - 2;
+        pManager.p_MaxMana = pManager.p_MaxMana - 2;
+
         absorbSelected = true;
 
         absorbButton.SetActive(false);
@@ -299,7 +305,10 @@ public class PathManager : MonoBehaviour
     public void abstainPath()
     {
         PlayerManager pManager = player.GetComponent<PlayerManager>();
+
         pManager.p_Mana = pManager.p_Mana + 3;
+        pManager.p_MaxMana = pManager.p_MaxMana + 3;
+
         PlayerManager.p_Health = PlayerManager.p_Health - 10;
         //PlayerManager.p_MaxHealth = PlayerManager.p_MaxHealth - 10;
         abstainSelected = true;
