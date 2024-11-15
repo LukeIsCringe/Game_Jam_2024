@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -7,7 +8,11 @@ public class PathManager : MonoBehaviour
     // Player stuff
     public GameObject player;
 
-    [SerializeField]private GameObject playerHealthUI;
+    [SerializeField] private GameObject playerHealthUI;
+    [SerializeField] private GameObject playerManaUI;
+
+    [SerializeField] private GameObject playerUICover;
+
     [SerializeField] private float healthAlpha;
 
     // Transition & loading stuff
@@ -41,6 +46,10 @@ public class PathManager : MonoBehaviour
 
     [SerializeField] private string[] abilityNames = {"Chain Pull", "Beastly Push", "Pharisaical Fire"};
 
+    public bool chainPull;
+    public bool beastlyPush;
+    public bool pharFire;
+
     [SerializeField] private GameObject Ability_1_Button;
     [SerializeField] private TMP_Text Ability_1_Text;
 
@@ -63,6 +72,10 @@ public class PathManager : MonoBehaviour
         level1Loaded = false;
 
         loadLevel1Assets = false;
+
+        chainPull = false;
+        beastlyPush = false;
+        pharFire = false;
     }
 
     public void Update()
@@ -70,10 +83,87 @@ public class PathManager : MonoBehaviour
         dualPathSelection();
         isPathSelected();
         pathTypeText();
+        abilitySetter();
 
         transitionScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0.02532968f, 0.1886792f, alpha);
         pathType.GetComponent<TextMeshProUGUI>().color = new Color(0.6745098f, 0.803049f, 0.9607843f, alpha);
         playerHealthUI.GetComponent<TextMeshProUGUI>().color = new Color(1, 0.1745283f, 0.1745283f, healthAlpha);
+        playerManaUI.GetComponent<TextMeshProUGUI>().color = new Color(0.4229263f, 0.5512053f, 0.9056604f, healthAlpha);
+    }
+
+    private void abilitySetter()
+    {
+        if (carry_absorb)
+        {
+            chainPull = true;
+            beastlyPush = true;
+
+            Ability_1_Text.text = abilityNames[0];
+            Ability_2_Text.text = abilityNames[1];
+
+            Ability_1_Button.tag = "Chain";
+            Ability_2_Button.tag = "Beast";
+        }
+
+        if (carry_abstain)
+        {
+            chainPull = true;
+            pharFire = true;
+
+            Ability_1_Text.text = abilityNames[0];
+            Ability_2_Text.text = abilityNames[2];
+
+            Ability_1_Button.tag = "Chain";
+            Ability_2_Button.tag = "Abstain";
+        }
+
+        if (absorb_carry)
+        {
+            beastlyPush = true;
+            chainPull = true;
+
+            Ability_1_Text.text = abilityNames[1];
+            Ability_2_Text.text = abilityNames[0];
+
+            Ability_1_Button.tag = "Beast";
+            Ability_2_Button.tag = "Chain";
+        }
+
+        if (absorb_abstain)
+        {
+            beastlyPush = true;
+            pharFire = true;
+
+            Ability_1_Text.text = abilityNames[1];
+            Ability_2_Text.text = abilityNames[2];
+
+            Ability_1_Button.tag = "Beast";
+            Ability_2_Button.tag = "Abstain";
+        }
+
+        if (abstain_carry)
+        {
+            pharFire = true;
+            chainPull = true;
+
+            Ability_1_Text.text = abilityNames[2];
+            Ability_2_Text.text = abilityNames[0];
+
+            Ability_1_Button.tag = "Abstain";
+            Ability_2_Button.tag = "Chain";
+        }
+
+        if (abstain_absorb)
+        {
+            pharFire = true;
+            beastlyPush = true;
+
+            Ability_1_Text.text = abilityNames[2];
+            Ability_2_Text.text = abilityNames[1];
+
+            Ability_1_Button.tag = "Abstain";
+            Ability_2_Button.tag = "Beast";
+        }
     }
 
     public void pathTypeText()
@@ -176,12 +266,11 @@ public class PathManager : MonoBehaviour
 
     public void carryPath()
     {
-        carryButton.SetActive(false);
-
-        PlayerManager pManager = player.GetComponent<PlayerManager>();
-
-        pManager.p_Health = pManager.p_Health + 15;
+        PlayerManager.p_Health = PlayerManager.p_Health + 15;
+        //PlayerManager.p_MaxHealth = PlayerManager.p_MaxHealth + 15;
         carrySelected = true;
+
+        carryButton.SetActive(false);
 
         if (selectionCount == 0)
         {
@@ -210,9 +299,9 @@ public class PathManager : MonoBehaviour
     public void abstainPath()
     {
         PlayerManager pManager = player.GetComponent<PlayerManager>();
-
         pManager.p_Mana = pManager.p_Mana + 3;
-        pManager.p_Health = pManager.p_Health - 10;
+        PlayerManager.p_Health = PlayerManager.p_Health - 10;
+        //PlayerManager.p_MaxHealth = PlayerManager.p_MaxHealth - 10;
         abstainSelected = true;
 
         abstainButton.SetActive(false);
