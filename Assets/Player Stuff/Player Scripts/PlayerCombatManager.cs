@@ -5,16 +5,16 @@ public class PlayerCombatManager : MonoBehaviour
 {
     // Button Game Objects
 
-    [SerializeField] private GameObject ability1;
-    [SerializeField] private GameObject ability2;
+    public GameObject ability1;
+    public GameObject ability2;
 
-    [SerializeField] private GameObject endTurnButton;
+    public GameObject endTurnButton;
 
     [SerializeField] private GameObject pos1Button;
     [SerializeField] private GameObject pos2Button;
     [SerializeField] private GameObject pos3Button;
 
-    [SerializeField] private GameObject attackButton;
+    public GameObject attackButton;
 
     // Position Bools
 
@@ -53,6 +53,9 @@ public class PlayerCombatManager : MonoBehaviour
     [SerializeField] private GameObject pathManagerGO;
     [SerializeField] private GameObject enemyManager;
     [SerializeField] private GameObject playerManager;
+    [SerializeField] private GameObject posManager;
+
+    [SerializeField] private int chainPosHolder;
 
     private void Start()
     {
@@ -77,6 +80,8 @@ public class PlayerCombatManager : MonoBehaviour
         pushing = false;
         firing = false;
 
+        chainPosHolder = 0;
+
         alpha = 1;
 
         combatAlpha = 0;
@@ -95,7 +100,7 @@ public class PlayerCombatManager : MonoBehaviour
 
         turnChangeover();
         resetButtons();
-        //zeroMana();
+        zeroMana();
     }
 
     private void turnChangeover()
@@ -103,17 +108,21 @@ public class PlayerCombatManager : MonoBehaviour
         EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
         PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
 
-        if (playerTurn && !eManager.enemyTurn && pManager.p_Mana == 0)
+        if (eManager.enemyTurn)
         {
             pManager.p_Mana = pManager.p_MaxMana;
+        }
+
+        if (playerTurn && !eManager.enemyTurn)
+        {
             playerUICombatCover.SetActive(false);
 
-            attackButton.SetActive(true);
+            //attackButton.SetActive(true);
 
-            endTurnButton.SetActive(true);
+            //endTurnButton.SetActive(true);
 
-            ability1.SetActive(true);
-            ability2.SetActive(true);
+            //ability1.SetActive(true);
+            //ability2.SetActive(true);
         } 
     }
 
@@ -140,23 +149,43 @@ public class PlayerCombatManager : MonoBehaviour
 
         attacking = true;
 
-        if (eManager.pos1Count == 1)
+        if (eManager.pos1Count == 1 && eManager.eT_Alive)
         {
             pos1Button.SetActive(true);
         }
 
-        if (eManager.pos2Count == 1)
+        if (eManager.pos2Count == 1 && eManager.eT_Alive)
         {
             pos1Button.SetActive(true);
             pos2Button.SetActive(true);
         }
 
-        if (eManager.pos3Count == 1)
+        if (eManager.pos3Count == 1 && eManager.eT_Alive)
         {
             pos1Button.SetActive(true);
             pos2Button.SetActive(true);
             pos3Button.SetActive(true);
         }
+
+        /*if (!eManager.eT_Alive && eManager.pos1Count == 3 && eManager.pos2Count == 2)
+        {
+            pos1Button.SetActive(true);
+            pos2Button.SetActive(true);
+        }
+
+        if (eManager.pos1Count == 2)
+        {
+            pos1Button.SetActive(true);
+            pos2Button.SetActive(false);
+            pos3Button.SetActive(false);
+        }
+
+        if (eManager.pos1Count == 3)
+        {
+            pos1Button.SetActive(true);
+            pos2Button.SetActive(false);
+            pos3Button.SetActive(false);
+        }*/
 
         playerUICombatCover.SetActive(true);
         combatAlpha = 1;
@@ -169,19 +198,19 @@ public class PlayerCombatManager : MonoBehaviour
         EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
         PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
 
-        if (PositionsManager.pos1Child == 1)
+        if (eManager.pos1Count == 1)
         {
             eManager.eT_Health = eManager.eT_Health - pManager.p_Damage;
             pManager.p_Mana = pManager.p_Mana - 2;
         }
 
-        if (PositionsManager.pos1Child == 2)
+        if (eManager.pos1Count == 3)
         {
             eManager.eMe_Health = eManager.eMe_Health - pManager.p_Damage;
             pManager.p_Mana = pManager.p_Mana - 2;
         }
 
-        if (PositionsManager.pos1Child == 3)
+        if (eManager.pos1Count == 2)
         {
             eManager.eMa_Health = eManager.eMa_Health - pManager.p_Damage;
             pManager.p_Mana = pManager.p_Mana - 2;
@@ -193,19 +222,19 @@ public class PlayerCombatManager : MonoBehaviour
         EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
         PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
 
-        if (PositionsManager.pos2Child == 1)
+        if (eManager.pos2Count == 1)
         {
             eManager.eT_Health = eManager.eT_Health - (pManager.p_Damage - 3);
             pManager.p_Mana = pManager.p_Mana - 2;
         }
 
-        if (PositionsManager.pos2Child == 2)
+        if (eManager.pos2Count == 3)
         {
             eManager.eMe_Health = eManager.eMe_Health - (pManager.p_Damage - 3);
             pManager.p_Mana = pManager.p_Mana - 2;
         }
 
-        if (PositionsManager.pos2Child == 3)
+        if (eManager.pos2Count == 2)
         {
             eManager.eMa_Health = eManager.eMa_Health - (pManager.p_Damage - 3);
             pManager.p_Mana = pManager.p_Mana - 2;
@@ -217,19 +246,19 @@ public class PlayerCombatManager : MonoBehaviour
         EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
         PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
 
-        if (PositionsManager.pos3Child == 1)
+        if (eManager.pos3Count == 1)
         {
             eManager.eT_Health = eManager.eT_Health - (pManager.p_Damage - 3);
             pManager.p_Mana = pManager.p_Mana - 2;
         }
 
-        if (PositionsManager.pos3Child == 2)
+        if (eManager.pos3Count == 3)
         {
             eManager.eMe_Health = eManager.eMe_Health - (pManager.p_Damage - 3);
             pManager.p_Mana = pManager.p_Mana - 2;
         }
 
-        if (PositionsManager.pos3Child == 3)
+        if (eManager.pos3Count == 2)
         {
             eManager.eMa_Health = eManager.eMa_Health - (pManager.p_Damage - 3);
             pManager.p_Mana = pManager.p_Mana - 2;
@@ -257,14 +286,31 @@ public class PlayerCombatManager : MonoBehaviour
     public void position2Button()
     {
         PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
+        EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
 
         pos2Selected = true;
         pos1Button.SetActive(false);
         pos2Button.SetActive(false);
         pos3Button.SetActive(false);
 
+        if (pulling)
+        {
+            pos1Checker();
+            pos2Checker();
+            pos3Checker();
+
+            chainPosHolder = eManager.pos1Count;
+            eManager.pos1Count = eManager.pos2Count;
+            eManager.pos2Count = chainPosHolder;
+
+            pManager.p_Mana = pManager.p_Mana - 1;
+
+            pulling = false;
+        }
+
         if (pManager.p_Mana > 0 && attacking)
         {
+
             pos2Checker();
             attacking = false;
         }
@@ -274,11 +320,27 @@ public class PlayerCombatManager : MonoBehaviour
     public void position3Button()
     {
         PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
+        EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
 
         pos3Selected = true;
         pos1Button.SetActive(false);
         pos2Button.SetActive(false);
         pos3Button.SetActive(false);
+
+        if (pulling)
+        {
+            pos1Checker();
+            pos2Checker();
+            pos3Checker();
+
+            chainPosHolder = eManager.pos1Count;
+            eManager.pos1Count = eManager.pos3Count;
+            eManager.pos3Count = chainPosHolder;
+
+            pManager.p_Mana = pManager.p_Mana - 1;
+
+            pulling = false;
+        }
 
         if (pManager.p_Mana > 0 && attacking)
         {
@@ -303,11 +365,14 @@ public class PlayerCombatManager : MonoBehaviour
     private void Ability1Setter()
     {
         EnemiesManager eManager = enemyManager.GetComponent<EnemiesManager>();
+        PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
 
         if (ability1.tag == "Chain")
         {
             //chain ability
             Debug.Log("Chain");
+
+            pulling = true;
 
             pos2Button.SetActive(true);
             pos3Button.SetActive(true);
@@ -330,14 +395,23 @@ public class PlayerCombatManager : MonoBehaviour
         {
             //fire ability
             Debug.Log("Fire");
+
+            pManager.p_Mana = pManager.p_Mana - 2;
+
             ability1.SetActive(false);
             ability2.SetActive(false);
+
+            fireAttackPos1.Play();
+            fireAttackPos2.Play();
+            fireAttackPos3.Play();
+
+            Invoke("fireDamage", 1f);
         }
     }
 
     private void Ability2Setter()
     {
-        
+        PlayerManager pManager = playerManager.GetComponent<PlayerManager>();
 
         if (ability2.tag == "Chain")
         {
@@ -365,6 +439,9 @@ public class PlayerCombatManager : MonoBehaviour
         {
             //fire ability
             Debug.Log("Fire");
+
+            pManager.p_Mana = pManager.p_Mana - 2;
+
             ability1.SetActive(false);
             ability2.SetActive(false);
 
@@ -420,6 +497,12 @@ public class PlayerCombatManager : MonoBehaviour
         combatAlpha = 1;
 
         pManager.p_Mana = 0;
+
+        eManager.eMa_Mana = 3;
+
+        //eManager.eMa_CoroutineHolder.GetComponent<MageAttackCoroutineHolder>().enabled = false;
+
+        eManager.eMa_TurnTaken = false;
         
         playerTurn = false;
         eManager.enemyTurn = true;

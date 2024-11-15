@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class PlayerManager : MonoBehaviour
@@ -18,20 +19,30 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        p_MaxHealth = 0;
+        p_MaxHealth = 80;
         p_Health = 80;
         p_Mana = 5;
+        p_MaxMana = 5;
         p_Damage = 20;
     }
 
     public void Update()
     {
         setStatText();
+        playerDeath();
     }
 
     private void setStatText()
     {
         healthText.text = new string ("Player Health: " + p_Health.ToString());
         manaText.text = new string("Player Mana: " + p_Mana.ToString());
+    }
+
+    private void playerDeath()
+    {
+        if (p_Health <= 0)
+        {
+            SceneManager.LoadScene("Main_Scene");
+        }
     }
 }

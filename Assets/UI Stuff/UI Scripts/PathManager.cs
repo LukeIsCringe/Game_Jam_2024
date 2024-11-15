@@ -5,8 +5,13 @@ using TMPro;
 
 public class PathManager : MonoBehaviour
 {
+    // Sprites
+
+    [SerializeField] private Sprite carry_absorb_sprite, carry_abstain_sprite, absorb_carry_sprite, absorb_abstain_sprite, abstain_carry_sprite, abstain_absorb_sprite;
+
     // Player stuff
     public GameObject player;
+    [SerializeField] private GameObject playerSprite;
 
     [SerializeField] private GameObject playerHealthUI;
     [SerializeField] private GameObject playerManaUI;
@@ -84,11 +89,49 @@ public class PathManager : MonoBehaviour
         isPathSelected();
         pathTypeText();
         abilitySetter();
+        
+        if (pathSelected)
+        {
+            Invoke("spriteSetter", 7f);
+        }
 
         transitionScreen.GetComponent<SpriteRenderer>().color = new Color(0, 0.02532968f, 0.1886792f, alpha);
         pathType.GetComponent<TextMeshProUGUI>().color = new Color(0.6745098f, 0.803049f, 0.9607843f, alpha);
         playerHealthUI.GetComponent<TextMeshProUGUI>().color = new Color(1, 0.1745283f, 0.1745283f, healthAlpha);
         playerManaUI.GetComponent<TextMeshProUGUI>().color = new Color(0.4229263f, 0.5512053f, 0.9056604f, healthAlpha);
+    }
+    // carry_absorb_sprite, carry_abstain_sprite, absorb_carry_sprite, absorb_abstain_sprite, abstain_carry_sprite, abstain_absorb_sprite;
+    private void spriteSetter()
+    {
+        if (carry_absorb)
+        {
+            playerSprite.GetComponent<SpriteRenderer>().sprite = carry_absorb_sprite;
+        }
+
+        if (carry_abstain)
+        {
+            playerSprite.GetComponent<SpriteRenderer>().sprite = carry_abstain_sprite;
+        }
+
+        if (absorb_carry)
+        {
+            playerSprite.GetComponent<SpriteRenderer>().sprite = absorb_carry_sprite;
+        }
+
+        if (absorb_abstain)
+        {
+            playerSprite.GetComponent<SpriteRenderer>().sprite = absorb_abstain_sprite;
+        }
+
+        if (abstain_carry)
+        {
+            playerSprite.GetComponent<SpriteRenderer>().sprite = abstain_carry_sprite;
+        }
+
+        if (abstain_absorb)
+        {
+            playerSprite.GetComponent<SpriteRenderer>().sprite = abstain_absorb_sprite;
+        }
     }
 
     private void abilitySetter()
